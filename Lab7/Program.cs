@@ -1,21 +1,26 @@
-﻿public class BankTerminal
-{
-    public event Action<int> OnMoneyWithDraw;
-
-    public void WithDraw(int amount)
-    {
-        Console.WriteLine($"Зачислення {amount} грн.....\n");
-        OnMoneyWithDraw.Invoke(amount);
-    }
-}
-
-public class Program
+﻿public class Program
 {
     public static void Main(string[] args)
     {
-        BankTerminal terminal = new BankTerminal();
-        terminal.OnMoneyWithDraw += amount => Console.WriteLine($"На ваш рахунок начислено {amount} грн.");
-        //terminal.OnMoneyWithDraw = null;
-        terminal.WithDraw(100);
+        Price(1000);
+    }
+
+    public static void Price(double value)
+    {
+        Func<double, double> discountCalculator = null;
+    
+        discountCalculator += x => x * 0.95;
+        discountCalculator += x => x * 0.90;
+        discountCalculator += x => x - 100;
+
+        Delegate[] discounts = discountCalculator.GetInvocationList();
+    
+        foreach (var discount in discounts)
+        {
+            Func<double, double> discountstep = (Func<double, double>)discount;
+
+            value = discountstep(value);
+        }
+        Console.WriteLine(value);
     }
 }
