@@ -2,7 +2,8 @@
 
 for (int i = 1; i <= 5; i++)
 {
-    actions.Add(() => { Console.WriteLine(i);});
+    int number = i;
+    actions.Add(() => { Console.WriteLine(number);});
 }
 
 foreach (var action in actions)
