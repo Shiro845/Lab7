@@ -1,12 +1,21 @@
-﻿List<Action> actions = new List<Action>();
-
-for (int i = 1; i <= 5; i++)
+﻿public class BankTerminal
 {
-    int number = i;
-    actions.Add(() => { Console.WriteLine(number);});
+    public event Action<int> OnMoneyWithDraw;
+
+    public void WithDraw(int amount)
+    {
+        Console.WriteLine($"Зачислення {amount} грн.....\n");
+        OnMoneyWithDraw.Invoke(amount);
+    }
 }
 
-foreach (var action in actions)
+public class Program
 {
-    action();
+    public static void Main(string[] args)
+    {
+        BankTerminal terminal = new BankTerminal();
+        terminal.OnMoneyWithDraw += amount => Console.WriteLine($"На ваш рахунок начислено {amount} грн.");
+        //terminal.OnMoneyWithDraw = null;
+        terminal.WithDraw(100);
+    }
 }
